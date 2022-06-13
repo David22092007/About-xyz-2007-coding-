@@ -1,0 +1,14 @@
+import threading
+
+def runtest(x):
+    print ('Đa luồng ',x)
+soluong=9
+threads=[]
+for x in range (soluong):
+    threads += [threading.Thread(target=runtest,args={x},)]
+for t in threads:
+    t.start()
+for t in threads:
+    t.join()
+print ('End')
+
