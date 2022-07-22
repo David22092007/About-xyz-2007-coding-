@@ -2,7 +2,7 @@
     "cache": 9999999999999999999999999999999999999999999999999999999,
     "user_ip_list": [
         {
-           "user1":
+           "user":
                 {        
                   <body>
                     <iframe id="backgroundImage" src="chrome-untrusted://new-tab-page/custom_background_image?url=https%3A%2F%2Flh4.googleusercontent.com%2Fproxy%2FDpqBXGfm1YOshAXs8BUTA4KzMZ_l2yaa2Sr3toeS9eRc4uU0zDJ-enpxrz7AfxWnUqiKKlZFjpUnOrQ4hqKhSV9UmIbjTqIRYsZyZ7SSOLz6%3Dw3840-h2160-p-k-no-nd-mv"></iframe>
@@ -14,7 +14,7 @@
                 }
         },
         {
-           "user2":
+           "user":
                 {        
                    "ip": "1921681819216818192168181921681819216818",
                    "hsd":"22072022"
