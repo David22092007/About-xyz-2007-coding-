@@ -1,0 +1,52 @@
+import requests;requests=requests.session()
+
+resp=requests.get('https://mbasic.facebook.com/reg/?cid=103&refsrc=deprecated&_rdr')
+
+lsd=(resp.text).split('<input type="hidden" name="lsd" value="')[1].split('"')[0]
+
+jazoest=(resp.text).split('<input type="hidden" name="jazoest" value="')[1].split('"')[0]
+
+reg_instance=(resp.text).split('<input type="hidden" name="reg_instance" value="')[1].split('"')[0]
+
+reg_impression_id=(resp.text).split('<input type="hidden" name="reg_impression_id" value="')[1].split('"')[0]
+
+headers = resp.headers
+
+params = {
+    'cid': '103',
+}
+
+data = {
+    'lsd': lsd,
+    'jazoest': jazoest,
+    'ccp': '2',
+    'reg_instance': reg_instance,
+    'submission_request': 'true',
+    'helper': '',
+    'reg_impression_id': reg_impression_id,
+    'ns': '0',
+    'zero_header_af_client': '',
+    'app_id': '',
+    'logger_id': '',
+    'field_names[]': [
+        'firstname',
+        'reg_email__',
+        'sex',
+        'birthday_wrapper',
+        'reg_passwd__',
+    ],
+    'lastname': 'Hồ',
+    'firstname': 'Gia Huy',
+    'reg_email__': 'trauvietnam999@gmail.com',
+    'sex': '1',
+    'custom_gender': '',
+    'did_use_age': 'false',
+    'birthday_day': '14',
+    'birthday_month': '2',
+    'birthday_year': '2007',
+    'age_step_input': '',
+    'reg_passwd__': 'emas676qt',
+    'submit': 'Đăng ký',
+}
+
+response = requests.post('https://mbasic.facebook.com/reg/submit/', params=params, headers=headers, data=data)
