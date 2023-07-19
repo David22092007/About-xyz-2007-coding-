@@ -172,7 +172,7 @@ while True:
                     'store_name': (json.load(requests.get('https://story-shack-cdn-v2.glitch.me/generators/vietnamese-name-generator/').text)['data']['female'])+' '+datetime.date.today().strftime("%d/%m/%Y")+str((datetime.datetime.now())),
                     'store_number': a,
                 }
-                rsp = json.loads(requests.post(f'https://graph.facebook.com/v14.0/{id_page}/locations', params=params, headers=headers, data=data,timeout=2).text);id_page_location=rsp['id'];print('[',id_page,']',id_page_location)
+                rsp = json.loads(requests.post(f'https://graph.facebook.com/v14.0/{id_page}/locations', params=params, headers=headers, data=data).text);id_page_location=rsp['id'];print('[',id_page,']',id_page_location)
                 with open('list_id.txt','a') as a:
                     a.write(str(id_page_location)+'_'+id_page+'\n')
                 time.sleep(time_delay_register_page)
