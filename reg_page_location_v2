@@ -145,7 +145,7 @@ len_mak=0
 count=0
 while True:
     for i in list_:
-        if count >=1:
+        if count >=30:
             exit()
             
         access_token=i['access_token']
