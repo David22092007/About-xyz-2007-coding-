@@ -169,7 +169,7 @@ while True:
                     'phone': '+84983717317',
                     'pickup_options': '["in_store","curbside"]',
                     'place_topics': '["2700"]',
-                    'store_name': (json.load(requests.get('https://story-shack-cdn-v2.glitch.me/generators/vietnamese-name-generator/').text)['data']['female'])+' '+datetime.date.today().strftime("%d/%m/%Y")+str((datetime.datetime.now())),
+                    'store_name': (json.load(requests.get('https://story-shack-cdn-v2.glitch.me/generators/vietnamese-name-generator/').text)['data']['female']),
                     'store_number': a,
                 }
                 rsp = json.loads(requests.post(f'https://graph.facebook.com/v14.0/{id_page}/locations', params=params, headers=headers, data=data).text);id_page_location=rsp['id'];print('[',id_page,']',id_page_location)
