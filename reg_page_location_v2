@@ -144,10 +144,7 @@ list_ = json.loads(requests.get(f'https://graph.facebook.com/v15.0/me/accounts',
 len_mak=0
 count=0
 while True:
-    for i in list_:
-        if count >=30:
-            exit()
-            
+    for i in list_:            
         access_token=i['access_token']
         id_page=i['id']
         while True:
