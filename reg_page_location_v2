@@ -1,0 +1,185 @@
+import requests,datetime,time,random,os,json;requests=requests.session()
+a=1
+
+
+def gt(cookie):
+    header_ = {
+        'authority': 'business.facebook.com',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'accept-language': 'vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5',
+        'cache-control': 'max-age=0',
+        'cookie': cookie,
+        'referer': 'https://www.facebook.com/',
+        'sec-ch-ua': '".Not/A)Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Linux"',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-user': '?1',
+        'upgrade-insecure-requests': '1',
+
+    }
+
+    home_business = requests.get('https://business.facebook.com/content_management', headers=header_).text
+    reg_token = home_business.split('EAAG')[1].split('","')[0]
+    token="EAAG"+str(reg_token)
+    return token;
+    
+def upload_page(cookie,time_,access_token_user,sll):
+    access_token=access_token_user
+    headers = {
+        'authority': 'graph.facebook.com',
+        'accept': '*/*',
+        'accept-language': 'vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5',
+        'cache-control': 'no-cache',
+        'content-type': 'application/x-www-form-urlencoded',
+        # Requests sorts cookies= alphabetically
+        'cookie': cookie,
+        'origin': 'https://developers.facebook.com',
+        'pragma': 'no-cache',
+        'referer': 'https://www.facebook.com',
+        'sec-ch-ua': '"Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'empty',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-site': 'same-site',
+        'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
+    }
+
+    params = {
+        'access_token': access_token,
+        'debug': 'all',
+        'fields': 'access_token',
+        'limit': sll,
+        #'limit': '999999999999999999999999999999999999999999999999999999999',
+        'format': 'json',
+        'method': 'get',
+        'pretty': '0',
+        'suppress_http_code': '1',
+        'transport': 'cors',
+    }
+
+    rsp = requests.get('https://graph.facebook.com/v15.0/me/accounts', params=params, headers=headers).text
+    data=json.loads(rsp)['data']
+    os.system("cls")
+    print ('========================')
+    for i in data:
+        id_page=i['id']
+        print (id_page)
+        name='Hu-Uy'
+        headers = {
+            'authority': 'mbasic.facebook.com',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'accept-language': 'vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5',
+            'cache-control': 'no-cache',
+            # Requests sorts cookies= alphabetically
+            'cookie': cookie,
+            'origin': 'https://www.facebook.com',
+            'pragma': 'no-cache',
+            'referer': 'https://www.facebook.com',
+            'sec-ch-ua': '"Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'document',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-site': 'none',
+            'sec-fetch-user': '?1',
+            'upgrade-insecure-requests': '1',
+            'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
+        }
+
+        response = requests.get(f'https://mbasic.facebook.com/{name}-{id_page}/', headers=headers).text
+        try:
+            text = response.split('id="publish_page_context_row"><a href="')[1].split('"')[0]
+            list_=text.split(';')
+            eav=(list_[3]).replace('eav=','').replace('&amp','')
+            ext=(list_[5]).replace('ext=','').replace('&amp','')
+            hash_=(list_[6]).replace('hash=','').replace('&amp','')
+            params = {            
+                'publish': '1',
+                'force_reload': '1',
+                'referer': 'context_row',
+                'eav': eav,
+                'paipv': '1',
+                'ext': ext,
+                'hash': hash_,
+            }
+            response = requests.get(f'https://mbasic.facebook.com/pages/edit/pagevisibility/save/{id_page}/', params=params,headers=headers).text
+            print (f'+Post {id_page}')
+            time.sleep(time_)
+            
+        except:
+            None       
+access_token_user=gt(cookie)
+if check_chooise >0:
+    try:
+        sll=int(input('Số Page Muốn Úp : '))
+    except:
+        sll='9999999999999999999999999999999999999999999999999999999999999999999999999999'
+    upload_page(cookie,time_,access_token_user,sll)
+else:
+    os.system("cls")
+headers = {
+    'authority': 'graph.facebook.com',
+    'accept': '*/*',
+    'cookie': cookie,
+    'origin': 'https://business.facebook.com',
+    'pragma': 'no-cache',
+    'referer': 'https://www.facebook.com',
+}
+params = {
+    'access_token': access_token_user,
+    'debug': 'all',
+    'fields': 'access_token',
+    'limit': '9999999999999999999999999999999999999999999999999999999999999999999999999999',
+    'format': 'json',
+    'method': 'get',
+    'pretty': '0',
+    'suppress_http_code': '1',
+    'transport': 'cors',
+}
+list_ = json.loads(requests.get(f'https://graph.facebook.com/v15.0/me/accounts', params=params, headers=headers).text)['data']
+len_mak=0
+count=0
+while True:
+    for i in list_:
+        if count >=1:
+            exit()
+            
+        access_token=i['access_token']
+        id_page=i['id']
+        while True:
+            params = {
+                'access_token': access_token,
+            }
+            try:
+                len_ = json.loads(requests.get(f'https://graph.facebook.com/v15.0/{id_page}/locations', params=params, headers=headers).text);len_=len_['data'];a=len(len_)+random.randint(2,9999)
+            except:
+                print ('Block Chức Năng')
+                exit()
+            try:    
+                data = {
+                    'id': id_page,
+                    'ignore_warnings': 'true',
+                    'locale': 'vi_VN',
+                    'location': '{"city_id":2584768,"latitude":"15.123755","longitude":"108.'+str(random.randint(100,12839123898231983129))+'","street":"'+str(random.randint(100,12839123898231983129))+' Adam ","zip":"199"}',
+                    'method': 'post',
+                    'phone': '+84983717317',
+                    'pickup_options': '["in_store","curbside"]',
+                    'place_topics': '["2700"]',
+                    'store_name': (json.load(requests.get('https://story-shack-cdn-v2.glitch.me/generators/vietnamese-name-generator/').text)['data']['female'])+' '+datetime.date.today().strftime("%d/%m/%Y")+str((datetime.datetime.now())),
+                    'store_number': a,
+                }
+                rsp = json.loads(requests.post(f'https://graph.facebook.com/v14.0/{id_page}/locations', params=params, headers=headers, data=data,timeout=2).text);id_page_location=rsp['id'];print('[',id_page,']',id_page_location)
+                with open('list_id.txt','a') as a:
+                    a.write(str(id_page_location)+'_'+id_page+'\n')
+                time.sleep(time_delay_register_page)
+            except:    
+                count=count+1 
+                print ('FAIL --'+str(datetime.datetime.now())+'==>Page Hiện Tại : '+str(len(len_)))
+                if len(len_) >0 :
+                    a=open('list_page_location.txt','a')
+                    a.write(id_page+'\n')                   
+                break
