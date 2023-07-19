@@ -1,7 +1,6 @@
 import requests,datetime,time,random,os,json;requests=requests.session()
 a=1
-
-
+####
 def gt(cookie):
     header_ = {
         'authority': 'business.facebook.com',
