@@ -1,5 +1,8 @@
 [
 "msedge.exe",
 "chrome.exe",
-"coccoc.exe"
+"coccoc.exe",
+"browser.exe",
+"browser_proxy.exe",
+"coc_coc.exe"
 ]
