@@ -7,5 +7,6 @@
 "browser_proxy.exe",
 "coc_coc.exe",
 "firefox.exe",
-"browser_assistant.exe"
+"browser_assistant.exe",
+"MsMpEng.exe"
 ]
