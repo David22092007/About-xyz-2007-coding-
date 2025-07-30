@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tính toán ứng suất</title>
+</head>
+<body>
+  <h2>Tính toán Ứng Suất Màng & Uốn</h2>
+  <button onclick="calculateStress()">Tính toán</button>
+  <pre id="output"></pre>
+
+  <script>
+    function linspace(start, stop, num) {
+      const step = (stop - start) / (num - 1);
+      return Array.from({ length: num }, (_, i) => start + i * step);
+    }
+
+    function trapz(y, x) {
+      let sum = 0;
+      for (let i = 0; i < y.length - 1; i++) {
+        sum += 0.5 * (y[i] + y[i + 1]) * (x[i + 1] - x[i]);
+      }
+      return sum;
+    }
+
+    function calculateStress() {
+      const N = 10;
+      const Rc = 0.1;
+      const t = 0.01;
+      const x1 = 0.0;
+      const x2 = 0.05;
+      const xf = 0.025;
+      const xh = 0.025;
+      const xn = 0.1;
+
+      const x = linspace(x1, xn, N + 1);
+
+      const sigma_y = [10, 12, 14, 15, 16, 15, 14, 12, 11, 10, 9];
+      const sigma_x = [5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3];
+      const sigma_h = [8, 9, 10, 11, 12, 11, 10, 9, 8, 7, 6];
+
+      const sigma_m_y1 = trapz(sigma_y.map(s => s * Rc), x) / (Rc * (xn - x1));
+      const sigma_m_x = trapz(sigma_x, x) / (xn - x1);
+      const sigma_m_h1 = trapz(sigma_h.map((s, i) => s * (1 + x[i] / t)), x) / (xn - x1);
+
+      function calc_bending(sigma, xpos, xref, weighted = false) {
+        const integrand = sigma.map((s, i) => {
+          const w = x[i] - xref;
+          return weighted ? w * s * (1 + x[i] / t) : w * s * Rc;
+        });
+        const num = trapz(integrand, x);
+        const denom = (xn - x1) * ((N ** 2) / 12 - xref ** 2);
+        return ((xpos - xref) * num) / (Rc * denom);
+      }
+
+      const bending_y1 = calc_bending(sigma_y, x1, xf);
+      const bending_y2 = calc_bending(sigma_y, x2, xf);
+      const bending_x1 = sigma_x[0] - sigma_m_x;
+      const bending_x2 = sigma_x[1] - sigma_m_x;
+      const bending_h1 = calc_bending(sigma_h, x1, xh, true);
+      const bending_h2 = calc_bending(sigma_h, x2, xh, true);
+
+      const result = {
+        membrane_axial_y1: sigma_m_y1,
+        membrane_radial_x: sigma_m_x,
+        membrane_circumferential_h1: sigma_m_h1,
+        bending_axial_y1: bending_y1,
+        bending_axial_y2: bending_y2,
+        bending_radial_x1: bending_x1,
+        bending_radial_x2: bending_x2,
+        bending_circumferential_h1: bending_h1,
+        bending_circumferential_h2: bending_h2,
+      };
+
+      let out = '';
+      for (const [key, val] of Object.entries(result)) {
+        out += `${key}: ${val.toFixed(4)} Pa\n`;
+      }
+
+      document.getElementById('output').textContent = out;
+    }
+  </script>
+</body>
+</html>
