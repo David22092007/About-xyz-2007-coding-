@@ -5,13 +5,5 @@
 "browser_proxy.exe",
 "firefox.exe",
 "browser_assistant.exe",
-"lsass.exe",
-"ntoskrnl.exe",
-"smss.exe",
-"lsass.exe",
-"wininit.exe",
-"winlogon.exe",
-"csrss.exe",
-"services.exe",
-"svchost.exe"
+"lsass.exe"
 ]
